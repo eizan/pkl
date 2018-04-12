@@ -24,9 +24,12 @@ $hasil_peserta_status = mysqli_query($conn,$sql_peserta_status);
 $jumlah_peserta_status = mysqli_num_rows($hasil_peserta_status);
 
 // sql peserta seminggu terakhir
-$sql_peserta_terakhir = "SELECT * FROM peserta where tanggal_selesai between date_sub(now(),INTERVAL 1 WEEK) and now();";
+$sql_peserta_terakhir = "SELECT * FROM peserta where tanggal_selesai between now() and date_sub(now(),INTERVAL -1 WEEK)";
 $hasil_peserta_terakhir = mysqli_query($conn,$sql_peserta_terakhir);
 $jumlah_peserta_terakhir = mysqli_num_rows($hasil_peserta_terakhir);
+
+
+
 $no = 1;
 $no2 = 1;
 ?>
@@ -96,10 +99,16 @@ $no2 = 1;
 						<th>Asal</th>
 						<th>Tanggal Mulai</th>
 						<th>Tanggal Selesai</th>
+						<th>Sisa Hari</th>
 						<th>Sertifikat</th>
 					</tr>
 							<?php
 							while($row = mysqli_fetch_assoc($hasil_peserta_terakhir)) {
+								// menghitung sisa hari
+								$datetime1 = date_create($row['tanggal_selesai']);
+								$datetime2 = date_create($tanggal_sekarang);
+								$interval = date_diff($datetime1, $datetime2);
+								
 								?>
 								<tr>
 									<td><?php echo $no++; ?></td>
@@ -107,6 +116,7 @@ $no2 = 1;
 									<td><?php echo $row['asal']; ?></td>
 									<td><?php echo $row['tanggal_mulai']; ?></td>
 									<td><?php echo $row['tanggal_selesai']; ?></td>
+									<td><?php echo $interval->format('%a Hari'); ?></td>
 									<td><a target="_blank" href="sertifikat_cetak.php?id=<?php echo $row['id']; ?>" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Cetak</a></td>
 								  </tr>
 								<?php
@@ -141,9 +151,17 @@ $no2 = 1;
 						<th>Asal</th>
 						<th>Tanggal Mulai</th>
 						<th>Tanggal Selesai</th>
+						<th>Total Magang</th>
+						<th>Sisa Hari</th>
 					</tr>
 							<?php
 							while($row = mysqli_fetch_assoc($hasil_peserta_status)) {
+								// menghitung total hari
+								$datetime1 = date_create($row['tanggal_mulai']);
+								$datetime2 = date_create($row['tanggal_selesai']);
+								$datetime3 = date_create($tanggal_sekarang);
+								$interval = date_diff($datetime1, $datetime2);
+								$interval2 = date_diff($datetime2, $datetime3);
 								?>
 								<tr>
 									<td><?php echo $no2++; ?></td>
@@ -151,6 +169,8 @@ $no2 = 1;
 									<td><?php echo $row['asal']; ?></td>
 									<td><?php echo $row['tanggal_mulai']; ?></td>
 									<td><?php echo $row['tanggal_selesai']; ?></td>
+									<td><?php echo $interval->format('%a Hari'); ?></td>
+									<td><?php echo $interval2->format('%a Hari'); ?></td>
 								  </tr>
 								<?php
 							}

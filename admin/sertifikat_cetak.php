@@ -15,6 +15,9 @@ $id= $_GET['id'];
 
 	// memngabungkan text dengan gambar
 	$nama = $row['nama'];
+	$kota_lahir = $row['kota_lahir'].',';
+	$tanggal_lahir = $row['tanggal_lahir'];
+	$asal = $row['asal'];
 	$tanggal = date('d-m-Y');
 	$image = imagecreatefromjpeg($gambar);
 	$white = imageColorAllocate($image, 255, 255, 255);
@@ -31,8 +34,11 @@ $id= $_GET['id'];
 	$text_height = $text_box[3]-$text_box[1];
 	$x = ($image_width/2) - ($text_width/2);
 	//generate sertifikat beserta namanya
-	imagettftext($image, $size, 0, $x, 400, $black, $font, $nama);
-	imagettftext($image, 15, 0, 250, 530, $black, $font2, $tanggal);
+	imagettftext($image, $size, 0, 890, 807, $black, $font2, $nama);
+	imagettftext($image, $size, 0, 890, 860, $black, $font2, $kota_lahir);
+	imagettftext($image, $size, 0, 1160, 860, $black, $font2, $tanggal_lahir);
+	imagettftext($image, $size, 0, 890, 920, $black, $font2, $asal);
+	imagettftext($image, 35, 0, 1750, 1180, $black, $font2, $tanggal);
 
 	//tampilkan di browser
 	header("Content-type:  image/jpeg");

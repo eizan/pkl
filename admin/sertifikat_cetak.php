@@ -18,7 +18,9 @@ $id= $_GET['id'];
 	$kota_lahir = $row['kota_lahir'].',';
 	$tanggal_lahir = $row['tanggal_lahir'];
 	$asal = $row['asal'];
-	$tanggal = date('d-m-Y');
+	$tanggal_mulai = date("d-M-Y", strtotime($row['tanggal_mulai']));
+	$tanggal_selesai = date("d-M-Y", strtotime($row['tanggal_selesai']));
+	$tanggal = date('d F Y');
 	$image = imagecreatefromjpeg($gambar);
 	$white = imageColorAllocate($image, 255, 255, 255);
 	$black = imageColorAllocate($image, 0, 0, 0);
@@ -38,6 +40,8 @@ $id= $_GET['id'];
 	imagettftext($image, $size, 0, 890, 860, $black, $font2, $kota_lahir);
 	imagettftext($image, $size, 0, 1160, 860, $black, $font2, $tanggal_lahir);
 	imagettftext($image, $size, 0, 890, 920, $black, $font2, $asal);
+	imagettftext($image, 35, 0, 598, 1070, $black, $font2, $tanggal_mulai);
+	imagettftext($image, 35, 0, 970, 1070, $black, $font2, $tanggal_selesai);
 	imagettftext($image, 35, 0, 1750, 1180, $black, $font2, $tanggal);
 
 	//tampilkan di browser
